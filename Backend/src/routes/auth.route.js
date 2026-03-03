@@ -11,3 +11,24 @@ const authRouter = Router()
  * @access Public
  */
 authRouter.post('/register',authController.registerUserController)
+
+
+
+
+
+authRouter.post('/login',authController.loginUserController)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+module.exports = authRouter

@@ -1,6 +1,6 @@
 const express = require('express')
 const pdfParse = require('pdf-parse')
-const authMiddleware = require('../middlewares/auth.middleware')
+const authMiddleware = require('../middlewares/auth.middleware.js')
 const interviewController = require('../controllers/interview.controller.js')
 
 
@@ -15,3 +15,16 @@ const interviewRouter = express.Router()
 
 
 interviewRouter.post('/api/interview',authMiddleware.authUser,interviewController.genreteInterviewReportController)
+
+
+
+
+
+
+
+
+
+
+
+
+module.exports = interviewRouter

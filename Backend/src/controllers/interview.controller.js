@@ -9,7 +9,7 @@ const interviewReportModel = require('../models/interview.model.js')
 
 async function genreteInterviewReportController(req, res) {
     const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText()
-    const { selfDescrption, jobDescription } = req.body
+    const { selfDescription, jobDescription } = req.body
 
     const interviewReportByAI = await generateInterviewReport({
         resume: resumeContent.text,
@@ -33,4 +33,4 @@ async function genreteInterviewReportController(req, res) {
 }
 
 
-module.exports = genreteInterviewReportController
+module.exports = { genreteInterviewReportController }

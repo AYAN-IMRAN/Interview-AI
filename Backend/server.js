@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const app = require("./src/app.js");
 const connectToDB = require("./src/config/database.js");
-const generateInterviewReport = require("./src/services/ai.service.js");
+
 
 
 
@@ -12,7 +12,7 @@ const generateInterviewReport = require("./src/services/ai.service.js");
 
 
 connectToDB()
-generateInterviewReport(resume,selfDescription,jobDescription)
+
 
 
 

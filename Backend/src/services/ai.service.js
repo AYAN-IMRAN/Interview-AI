@@ -4,7 +4,7 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 })
 
-// Native Gemini Schema
+
 const responseSchema = {
     type: "object",
     properties: {

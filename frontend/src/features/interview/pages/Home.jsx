@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
+import { InterviewContext } from '../../interview.context.jsx'
 import '../styles/home.css'
 import Loading from '../../components/Loading.jsx'
 import { useInterview } from '../hooks/useInterview.js'

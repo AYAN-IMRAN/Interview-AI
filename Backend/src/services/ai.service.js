@@ -1,4 +1,8 @@
 const { GoogleGenAI } = require('@google/genai')
+const puppeteer = require("puppeteer")
+
+const { z } = require("zod")
+const { zodToJsonSchema } = require("zod-to-json-schema")
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
@@ -133,4 +137,142 @@ console.log(response.text);
     return result
 }
 
-module.exports = generateInterviewReport
+
+
+
+
+
+// ── PDF from HTML ─────────────────────────────────────────────────────────────
+async function generatePdfFromHtml(htmlContent) {
+  const browser = await puppeteer.launch({
+    headless: "new",
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+
+  const page = await browser.newPage();
+
+  await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+
+  
+  await page.addStyleTag({
+    content: `
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      @page { margin: 0; }
+    `,
+  });
+
+  const pdfBuffer = await page.pdf({
+    format: "A4",
+    printBackground: true,
+    margin: { top: "18mm", bottom: "18mm", left: "15mm", right: "15mm" },
+  });
+
+  await browser.close();
+  return pdfBuffer;
+}
+
+// ── Resume PDF Generator ──────────────────────────────────────────────────────
+async function generateResumePdf({ resume, selfDescription, jobDescription }) {
+  const resumePdfSchema = z.object({
+    html: z
+      .string()
+      .describe(
+        "Complete, self-contained HTML document for the resume. Must include all CSS inline inside a <style> tag. No external dependencies."
+      ),
+  });
+
+  const prompt = `
+You are an expert resume writer and frontend developer. Your task is to generate a COMPLETE, SELF-CONTAINED HTML resume that is:
+- Tailored specifically to the provided job description
+- Visually professional and modern — not a plain text dump
+- ATS-friendly (clear headings, no tables for layout, no images, no icons that break parsing)
+- Honest — based ONLY on the candidate's actual experience and skills provided
+- Natural-sounding — NOT AI-generated tone, write like a real human professional would
+- 1 page maximum (strictly — the PDF must not overflow onto page 2 unless the candidate has 5+ years of experience)
+
+═══════════════════════════════════
+CANDIDATE DATA
+═══════════════════════════════════
+Resume / Experience:
+${resume || "Not provided"}
+
+Self Description:
+${selfDescription || "Not provided"}
+
+Target Job Description:
+${jobDescription}
+
+═══════════════════════════════════
+DESIGN REQUIREMENTS (follow exactly)
+═══════════════════════════════════
+1. COLOR SCHEME: Use a clean, professional palette. Suggested: deep navy (#1a2744) for headers/accents, white background (#ffffff), dark gray (#2d2d2d) for body text, light gray (#f4f6f8) for section backgrounds. You may use a subtle left border accent (3px solid navy) on section headings.
+
+2. TYPOGRAPHY:
+   - Import Google Fonts: "Inter" (body) via @import in the <style> tag
+   - Name: 22–26px, bold, navy color
+   - Section headings: 11px, uppercase, letter-spacing: 1.5px, navy
+   - Body text: 10–11px, line-height 1.5, #2d2d2d
+   - Keep font sizes small to fit on 1 page
+
+3. LAYOUT:
+   - Single column OR two-column (left sidebar for contact/skills, right for experience)
+   - Use CSS flexbox or grid — NO HTML tables for layout
+   - Padding: 0 (page margins handled by puppeteer)
+   - Sections: Name + Contact → Summary → Experience → Skills → Education
+   - Only include sections that have real data from the candidate
+
+4. SECTIONS TO INCLUDE (only if data exists):
+   - Header: Full name, email, phone (if available), LinkedIn/GitHub (if mentioned), city
+   - Professional Summary: 2–3 sentences, first-person, confident but not arrogant. Tailored to the job.
+   - Work Experience: Company, Role, Date range, 3–4 bullet points using action verbs + quantified results where possible
+   - Skills: Grouped by category (e.g., Frontend, Backend, Tools). Use inline tags or comma-separated. Match skills from the job description.
+   - Education: Degree, Institution, Year
+   - Projects (if mentioned and relevant): Name, 1-line description, tech stack
+
+5. ATS RULES (critical):
+   - All text must be selectable (no text-as-image)
+   - Use semantic HTML: <h1>, <h2>, <h3>, <p>, <ul>, <li>
+   - NO SVG icons, NO background images, NO canvas
+   - Section titles must be plain text (not inside SVGs or pseudo-elements)
+   - Keep skill keywords from the job description naturally present in the text
+
+6. CONTENT RULES:
+   - Do NOT fabricate experience, companies, or qualifications not mentioned in the candidate data
+   - Do NOT use phrases like "dynamic professional", "results-driven", "passionate about" — too cliché
+   - Use specific, concrete language: "Built X using Y, reducing Z by N%"
+   - If the candidate is a student or junior, reflect that honestly — highlight projects, learning, and enthusiasm for growth
+   - Match the job description keywords naturally but do not keyword-stuff
+
+7. FINAL OUTPUT:
+   - Return a single complete HTML document starting with <!DOCTYPE html>
+   - All CSS must be inside a <style> tag in the <head>
+   - No external CSS files, no JavaScript, no external fonts via link tag — use @import inside <style>
+   - The HTML must render correctly when converted to PDF by puppeteer with printBackground: true
+
+Return ONLY the JSON object with the "html" field. No explanation, no markdown, no extra text.
+`;
+
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash-lite",
+    contents: prompt,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: zodToJsonSchema(resumePdfSchema),
+      temperature: 0.4,   // lower = more consistent, professional output
+      maxOutputTokens: 8192,
+    },
+  });
+
+  const jsonContent = JSON.parse(response.text);
+
+  if (!jsonContent.html || jsonContent.html.trim().length < 200) {
+    throw new Error("AI returned empty or invalid HTML for the resume.");
+  }
+
+  const pdfBuffer = await generatePdfFromHtml(jsonContent.html);
+  return pdfBuffer;
+}
+
+
+
+module.exports = {generateInterviewReport,generateResumePdf}

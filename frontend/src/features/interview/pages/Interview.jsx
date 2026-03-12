@@ -7,26 +7,26 @@ import '../styles/interview.css'
 import Loading from '../../components/Loading.jsx'
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
-const CodeIco = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-const ChatIco = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-const MapIco  = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-const GapIco  = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-const BackIco = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-const DlIco   = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-const SparkIco = () => <svg width="11" height="11" viewBox="0 0 24 24" fill="#A78BFA"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+const CodeIco = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /></svg>
+const ChatIco = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+const MapIco = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11" /></svg>
+const GapIco = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+const BackIco = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>
+const DlIco = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+const SparkIco = () => <svg width="11" height="11" viewBox="0 0 24 24" fill="#A78BFA"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" /></svg>
 const ChevIco = ({ open }) => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
     style={{ transform: open ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform .25s ease' }}>
-    <polyline points="6 9 12 15 18 9"/>
+    <polyline points="6 9 12 15 18 9" />
   </svg>
 )
 
 // ── Tabs config ───────────────────────────────────────────────────────────────
 const TABS = [
-  { id: 'technical',  label: 'Technical',  icon: <CodeIco /> },
+  { id: 'technical', label: 'Technical', icon: <CodeIco /> },
   { id: 'behavioral', label: 'Behavioral', icon: <ChatIco /> },
-  { id: 'roadmap',    label: 'Road Map',   icon: <MapIco /> },
-  { id: 'gaps',       label: 'Skill Gaps', icon: <GapIco /> },
+  { id: 'roadmap', label: 'Road Map', icon: <MapIco /> },
+  { id: 'gaps', label: 'Skill Gaps', icon: <GapIco /> },
 ]
 
 // ── Toast style ───────────────────────────────────────────────────────────────
@@ -37,7 +37,7 @@ const toastStyle = {
     fontSize: '0.8rem', borderRadius: '0.65rem',
   },
   success: { iconTheme: { primary: '#A78BFA', secondary: '#111' } },
-  error:   { iconTheme: { primary: '#f87171', secondary: '#111' } },
+  error: { iconTheme: { primary: '#f87171', secondary: '#111' } },
   loading: { iconTheme: { primary: '#F5C518', secondary: '#111' } },
 }
 
@@ -126,10 +126,10 @@ const Interview = () => {
   const sc = scoreClass(report.matchScore)
 
   const counts = {
-    technical:  report.technicalQuestions?.length  ?? 0,
+    technical: report.technicalQuestions?.length ?? 0,
     behavioral: report.behavioralQuestions?.length ?? 0,
-    roadmap:    report.preparationPlan?.length      ?? 0,
-    gaps:       report.skillGaps?.length            ?? 0,
+    roadmap: report.preparationPlan?.length ?? 0,
+    gaps: report.skillGaps?.length ?? 0,
   }
 
   return (
@@ -268,7 +268,7 @@ const Interview = () => {
                   </div>
                 ))}
                 <div className="iv-legend">
-                  {[['high','High'],['medium','Medium'],['low','Low']].map(([s, l]) => (
+                  {[['high', 'High'], ['medium', 'Medium'], ['low', 'Low']].map(([s, l]) => (
                     <div key={s} className="iv-legend__item">
                       <span className={`iv-sev-dot iv-sev-dot--${s}`} />{l}
                     </div>

@@ -49,3 +49,14 @@ export const getAllInterviewReports = async () => {
 
     return response.data
 }
+
+/**
+ * @description Service to generate and download resume PDF.
+ */
+export const generateResumePdf = async ({ interviewReportId }) => {
+ const response = await api.post(`/api/interview/resume/pdf/${interviewReportId}`, {}, {
+    responseType: 'arraybuffer'
+})
+
+    return response.data
+}

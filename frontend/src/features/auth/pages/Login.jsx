@@ -37,7 +37,7 @@ const Login = () => {
     try {
       await handleLogin({ email, password });
       toast.success("Welcome back!", { id: tid });
-      setTimeout(() => navigate("/"), 800);
+      setTimeout(() => navigate('/'), 1200)
     } catch (err) {
       toast.error(err?.response?.data?.message || "Invalid email or password.", { id: tid });
     }

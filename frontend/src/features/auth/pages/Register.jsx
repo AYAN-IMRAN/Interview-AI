@@ -41,7 +41,7 @@ const Register = () => {
     try {
       await handleRegister({ username, email, password });
       toast.success("Account created! Redirecting…", { id: tid });
-      setTimeout(() => navigate("/login"), 800);
+      setTimeout(() => navigate('/'), 1200)
     } catch (err) {
       toast.error(err?.response?.data?.message || "Registration failed. Try again.", { id: tid });
     }

@@ -6,7 +6,6 @@ import Home from "./features/interview/pages/Home";
 import Interview from "./features/interview/pages/Interview";
 import LandingHome from "./features/home/LandingHome";
 
-
 export const router = createBrowserRouter([
     {
         path: '/login',
@@ -18,11 +17,11 @@ export const router = createBrowserRouter([
     },
     {
         path: '/',                                              
-        element: <Protected><LandingHome /></Protected>
+        element: <LandingHome />      
     },
     {
         path: '/interview',                                  
-        element: <Protected><Home /></Protected>
+        element: <Protected><Home /></Protected>  
     },
     {
         path: '/interview/:interviewId',                        

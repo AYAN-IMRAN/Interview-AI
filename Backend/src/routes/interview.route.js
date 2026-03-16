@@ -1,5 +1,4 @@
 const express = require('express')
-const pdfParse = require('pdf-parse')
 const authMiddleware = require('../middlewares/auth.middleware.js')
 const interviewController = require('../controllers/interview.controller.js')
 const upload = require('../middlewares/file.middleware.js')
